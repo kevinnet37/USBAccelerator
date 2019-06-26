@@ -2,15 +2,16 @@
 
 ###################################################################
 ######                USB Accelerator by Jack                ######
-######                     Version 0.3.1                     ######
+######                      Version 1.0                      ######
 ######                                                       ######
 ######     https://github.com/JackMerlin/USBAccelerator      ######
 ######                                                       ######
 ###################################################################
 
-export PATH=/sbin:/bin:/usr/sbin:/usr/bin$PATH
-VERSION='0.3.1'
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin:$PATH
+VERSION='1.0'
 SPATH='/jffs/scripts'
+GITHUB='https://github.com/JackMerlin/USBAccelerator'
 GITHUB_DIR='https://raw.githubusercontent.com/JackMerlin/USBAccelerator/master'
 COLOR_WHITE='\033[0m'
 COLOR_LIGHT_WHITE='\033[1;37m'
@@ -50,22 +51,26 @@ printf '在原始系统中一些参数被保守地锁定在较低的值内，\n'
 printf '因此加速器的原理其实是精确调教系统参数来释放硬件应有的性能。\n' 
 printf '___________________________________________________________________\n'
 printf '%b注意：%b\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
-printf '这是一个相当早期的脚本，它目前仍处在预览阶段，\n'
+printf '这是一个比较早期的脚本，它可能会有些不尽如人意，\n'
 printf '所以，如果有任何问题请反馈给我。\n'
 printf '\n'
 printf '%b版权：%b\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
 printf '(c)2019 USB加速器由Jack制作，使用GPLv3许可证发布。\n'
-printf '如果你尊重GPLv3许可证，你可以自由地使用它。\n'
-printf '源码在 https://github.com/JackMerlin/USBAccelerator\n'
+printf '如果你遵循GPLv3许可证，你可以自由地使用它。\n'
+printf '源码在 %s\n' "$GITHUB"
+printf '许可证全文 %s/blob/master/LICENSE\n' "$GITHUB"
 printf '___________________________________________________________________\n'
 if [ "$CheckEnable" = "0" ]; then
 	printf '输入 %b1%b 开启%bUSB加速器\n' "$COLOR_LIGHT_GREEN" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
 fi
 if [ "$CheckEnable" = "1" ]; then
 	printf '输入 %b2%b 关闭%bUSB加速器\n' "$COLOR_LIGHT_GREEN" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
-	printf '输入 %b3%b 重装%bUSB加速器（建议每次更新后重装）\n' "$COLOR_LIGHT_GREEN" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
+	printf '输入 %b3%b 重装%bUSB加速器\n' "$COLOR_LIGHT_GREEN" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
 fi
-	printf '输入 %b4%b 查看%b致谢名单\n' "$COLOR_LIGHT_GREEN" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
+if [ -f "$SPATH/usbaccelerator.sh" ]; then
+	printf '输入 %b4%b 更新%bUSB加速器\n' "$COLOR_LIGHT_GREEN" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
+fi
+	printf '输入 %b5%b 查看%b致谢名单\n' "$COLOR_LIGHT_GREEN" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
 	printf '输入 %b9%b 卸载%bUSB加速器\n' "$COLOR_LIGHT_GREEN" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
 	printf '输入 %be%b 退出安装%bUSB加速器\n' "$COLOR_LIGHT_GREEN" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
 printf '___________________________________________________________________\n'
@@ -85,7 +90,10 @@ break
 3)Reinstall
 break
 ;;
-4)Thanks_list
+4)Check_updates
+break
+;;
+5)Thanks_list
 break
 ;;
 9)Validate_removal
@@ -110,13 +118,14 @@ printf 'How does it work?\n'
 printf 'Trust me, it does not have the magic, it just changes some settings to the best.\n' 
 printf '___________________________________________________________________\n'
 printf '%bWarning%b\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
-printf 'Now it is a preview version, I mean maybe something not working for you,\n'
+printf 'Maybe some settings not working for you,\n'
 printf 'But, your feedback can make it be better, so let me hear your voice.\n'
 printf '\n'
 printf '%bCopyright%b\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
 printf '(c)2019 USB Accelerator by Jack, Use the GPLv3 license.\n'
 printf 'You can find the source code or feedback below\n'
-printf 'https://github.com/JackMerlin/USBAccelerator\n'
+printf '%s\n' "$GITHUB"
+printf 'The license: %s/blob/master/LICENSE\n' "$GITHUB"
 printf '___________________________________________________________________\n'
 if [ "$CheckEnable" = "0" ]; then
 	printf 'Enter %b1%b to %bEnable%b USB Accelerator\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
@@ -125,7 +134,10 @@ if [ "$CheckEnable" = "1" ]; then
 	printf 'Enter %b2%b to %bDisable%b USB Accelerator\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
 	printf 'Enter %b3%b to %bRe-install%b USB Accelerator\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
 fi
-	printf 'Enter %b4%b to %bShow%b thanks list\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
+if [ -f "$SPATH/usbaccelerator.sh" ]; then
+		printf 'Enter %b4%b to %bUpdate%b USB Accelerator\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
+fi
+	printf 'Enter %b5%b to %bShow%b thanks list\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
 	printf 'Enter %b9%b to %bRemove%b USB Accelerator\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
 	printf 'Enter %be%b to %bExit%b\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE" "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
 printf '___________________________________________________________________\n'
@@ -145,7 +157,10 @@ break
 3)Reinstall
 break
 ;;
-4)Thanks_list
+4)Check_updates
+break
+;;
+5)Thanks_list
 break
 ;;
 9)Validate_removal
@@ -176,8 +191,7 @@ case "$menu2" in
 1)Enable
 break
 ;;
-2)printf '此模式处于测试状态，可能效果并不明显。\n'
-SFW_Enable
+2)SFW_Enable
 break
 ;;
 3)Welcome_message_zh
@@ -191,7 +205,7 @@ printf '\n___________________________________________________________________\n'
 printf 'Does your router running %bAsuswrt-Merlin%b firmware?\n' "$COLOR_LIGHT_WHITE" "$COLOR_WHITE"
 printf '\n'
 printf '%by%b = Yes, it is true.\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
-printf '%bn%b = No, this is asus stock firmware.\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
+printf '%bn%b = No, this is asus Stock firmware.\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
 printf '%br%b = Return to the previous menu.\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
 printf '___________________________________________________________________\n'
 printf 'Please enter\n'
@@ -220,13 +234,13 @@ if [ "$lang" = "zh" ]; then
 printf '\n___________________________________________________________________\n'
 printf '你确定卸载USB加速器吗？\n'
 printf '\n'
-printf '输入 %by%b 确定卸载。\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
-printf '输入 %bn%b 不卸载。\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
+printf '输入 %by%b 确定卸载\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
+printf '输入 %bn%b 不卸载\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
 printf '___________________________________________________________________\n'
 printf '请输入对应字母\n'
 printf '\n'
-read -r "menu9"
-case "$menu9" in
+read -r "menu3"
+case "$menu3" in
 y)Remove
 break
 ;;
@@ -240,13 +254,13 @@ else
 printf '\n___________________________________________________________________\n'
 printf 'Are you sure to remove USB Accelerator?\n'
 printf '\n'
-printf '%by%b = Yes, I am sure.\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
-printf '%bn%b = Cancel.\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
+printf '%by%b = Yes, I am sure\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
+printf '%bn%b = Cancel\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
 printf '___________________________________________________________________\n'
 printf 'Please enter\n'
 printf '\n'
-read -r "menu9"
-case "$menu9" in
+read -r "menu3"
+case "$menu3" in
 y)Remove
 break
 ;;
@@ -261,7 +275,7 @@ done
 }
 
 Thanks_list () {
-Names='nyanmisaka, qiutian128, iphone8, pmc_griffon, tzh5278, samsul, 特纳西特基欧, dbslsy, ricky1992, awee, Master, lesliesu255, zk0119, 全池泼洒'
+Names='nyanmisaka, qiutian128, iphone8, pmc_griffon, tzh5278, samsul, 特纳西特基欧, dbslsy, ricky1992, awee, Master, lesliesu255, zk0119, 全池泼洒, glk17, luoyulong, kimhai, xiaole51, vipnetant, vvwn'
 if [ "$lang" = "zh" ]; then
 printf '\n___________________________________________________________________\n'
 printf '%b特别感谢：%b\n' "$COLOR_LIGHT_GREEN" "$COLOR_WHITE"
@@ -275,8 +289,8 @@ printf '（排名不分先后）\n'
 printf '%s等人\n' "$Names"
 printf '___________________________________________________________________\n'
 printf '按任意键继续\n'
-read -r "menu5"
-case "$menu5" in
+read -r "menu4"
+case "$menu4" in
 	*)Welcome_message_zh
 	;;
 esac
@@ -293,8 +307,8 @@ printf '(Names not listed in order)\n'
 printf '%s and others.\n' "$Names"
 printf '___________________________________________________________________\n'
 printf 'Enter any key to continue\n'
-read -r "menu5"
-case "$menu5" in
+read -r "menu4"
+case "$menu4" in
 	*)Welcome_message
 	;;
 esac
@@ -302,20 +316,10 @@ fi
 }
 
 Error_344 () {
-#Easter egg
+# Easter egg
 if [ "$lang" = "zh" ]; then
 printf '\n___________________________________________________________________\n'
-printf '你的路由器即将在5秒后爆炸，请享受这个烟火表演。\n'
-printf '\n'
-sleep 1
-printf '  5\n'
-sleep 1
-printf '  4\n'
-sleep 1
-printf '  3\n'
-sleep 5
-printf '___________________________________________________________________\n'
-printf '糟糕，代码错误，引爆失败，请向作者报告这个错误。\n'
+printf '这是一个隐藏信息，以感谢你对此脚本的使用。\n'
 printf '___________________________________________________________________\n'
 printf '按任意键继续\n'
 read -r "menu5"
@@ -325,18 +329,7 @@ case "$menu5" in
 esac
 else
 printf '\n___________________________________________________________________\n'
-printf 'Your router will be auto self-destruct, please enjoy a bricked router.\n'
-printf '\n'
-sleep 1
-printf '  5\n'
-sleep 1
-printf '  4\n'
-sleep 1
-printf '  3\n'
-sleep 5
-printf '___________________________________________________________________\n'
-printf 'Error, please feedback this error code 344 to developers,\n'
-printf 'We will fix this error in the future.\n'
+printf 'This is a easter egg to thank you for your use.\n'
 printf '___________________________________________________________________\n'
 printf 'Enter any key to continue\n'
 read -r "menu5"
@@ -358,38 +351,132 @@ fi
 }
 
 Download_files () {
+Checkinternet="0"
+while [ "$(nvram get ntp_ready)" = "0" ] && [ "$Checkinternet" -lt "300" ]; do
+	Checkinternet=$((Checkinternet+1))
+	sleep 1
+done
+
+if [ "$Checkinternet" -ge "300" ]; then
+	if [ "$lang" = "zh" ]; then
+		printf '\n网络连接错误，请联网后再试。\n'
+		logger -t "USB加速器" "网络连接错误，请联网后再试。"
+	else
+		printf '\nThere is no internet connection.\n'
+		logger -t "USB Accelerator" "There is no internet connection."
+	fi
+exit 1
+fi
+
 if [ -f "$SPATH/usbstatus.png" ]; then
 iconlocalmd5="$(md5sum "$SPATH/usbstatus.png" | awk '{print $1}')"
-iconremotemd5="$(wget -q -c -T 30 --no-check-certificate "$GITHUB_DIR/usbstatus.png" -O /tmp/usbstatus.check && md5sum /tmp/usbstatus.check | awk '{print $1}')"
+	if [ -f "/rom/etc/ssl/certs/ca-certificates.crt" ]; then
+		iconremotemd5="$(wget -q -c -T 30 --ca-certificate=/rom/etc/ssl/certs/ca-certificates.crt "$GITHUB_DIR/usbstatus.png" -O /tmp/usbstatus.check && md5sum /tmp/usbstatus.check | awk '{print $1}')"
+	else
+		iconremotemd5="$(wget -q -c -T 30 --no-check-certificate "$GITHUB_DIR/usbstatus.png" -O /tmp/usbstatus.check && md5sum /tmp/usbstatus.check | awk '{print $1}')"
+	fi
 	if [ "$iconlocalmd5" != "$iconremotemd5" ]; then
 		mv -f /tmp/usbstatus.check $SPATH/usbstatus.png 2>/dev/null && chmod 644 $SPATH/usbstatus.png 2>/dev/null
 	else
 		rm -f /tmp/usbstatus.check 2>/dev/null
 	fi
 else
-	wget -q -c -T 30 --no-check-certificate "$GITHUB_DIR/usbstatus.png" -O "$SPATH/usbstatus.png" && chmod 644 $SPATH/usbstatus.png
+	if [ -f "/rom/etc/ssl/certs/ca-certificates.crt" ]; then
+		wget -q -c -T 30 --ca-certificate=/rom/etc/ssl/certs/ca-certificates.crt "$GITHUB_DIR/usbstatus.png" -O "$SPATH/usbstatus.png" && chmod 644 $SPATH/usbstatus.png
+	else
+		wget -q -c -T 30 --no-check-certificate "$GITHUB_DIR/usbstatus.png" -O "$SPATH/usbstatus.png" && chmod 644 $SPATH/usbstatus.png
+	fi
 fi
 
 if [ -f "$SPATH/usbaccelerator.sh" ]; then
 localmd5="$(md5sum "$SPATH/usbaccelerator.sh" | awk '{print $1}')"
-remotemd5="$(wget -q -c -T 30 --no-check-certificate "$GITHUB_DIR/usbaccelerator.sh" -O /tmp/usbaccelerator.check && md5sum /tmp/usbaccelerator.check | awk '{print $1}')"
-	if [ "$localmd5" != "$remotemd5" ]; then
+	if [ -f "/rom/etc/ssl/certs/ca-certificates.crt" ]; then
+		remotemd5="$(wget -q -c -T 30 --ca-certificate=/rom/etc/ssl/certs/ca-certificates.crt "$GITHUB_DIR/usbaccelerator.sh" -O /tmp/usbaccelerator.check && md5sum /tmp/usbaccelerator.check | awk '{print $1}')"
+	else
+		remotemd5="$(wget -q -c -T 30 --no-check-certificate "$GITHUB_DIR/usbaccelerator.sh" -O /tmp/usbaccelerator.check && md5sum /tmp/usbaccelerator.check | awk '{print $1}')"
+	fi
+		if [ "$localmd5" != "$remotemd5" ]; then
 		mv -f /tmp/usbaccelerator.check $SPATH/usbaccelerator.sh 2>/dev/null && chmod 755 $SPATH/usbaccelerator.sh 2>/dev/null
+		Checkupdates="1"
 	else
 		rm -f /tmp/usbaccelerator.check 2>/dev/null
+		Checkupdates="0"
 	fi
 else
-	wget -q -c -T 30 --no-check-certificate "$GITHUB_DIR/usbaccelerator.sh" -O "$SPATH/usbaccelerator.sh" && chmod 755 $SPATH/usbaccelerator.sh
+	if [ -f "/rom/etc/ssl/certs/ca-certificates.crt" ]; then
+		wget -q -c -T 30 --ca-certificate=/rom/etc/ssl/certs/ca-certificates.crt "$GITHUB_DIR/usbaccelerator.sh" -O "$SPATH/usbaccelerator.sh" && chmod 755 $SPATH/usbaccelerator.sh
+	else
+		wget -q -c -T 30 --no-check-certificate "$GITHUB_DIR/usbaccelerator.sh" -O "$SPATH/usbaccelerator.sh" && chmod 755 $SPATH/usbaccelerator.sh
+	fi
+	Checkupdates="1"
+fi
+}
+
+Check_updates () {
+if [ "$Checkupdates" = "1" ]; then
+printf '\n___________________________________________________________________\n'
+	if [ "$lang" = "zh" ]; then
+		printf '更新完成，接下来将返回主菜单，建议手动关闭加速器并重新开启。\n'
+		printf '___________________________________________________________________\n'
+		printf '按任意键继续\n'
+		read -r "menu6"
+		case "$menu6" in
+		*)$SPATH/usbaccelerator.sh
+		;;
+		esac
+	fi
+	if [ "$lang" = "en" ]; then
+		printf 'Update completed! Please disable the USB accelerator and enable it again.\n'
+		printf '___________________________________________________________________\n'
+		printf 'Enter any key to continue\n'
+		read -r "menu6"
+		case "$menu6" in
+		*)$SPATH/usbaccelerator.sh
+		;;
+		esac
+	fi
+fi
+
+if [ "$Checkupdates" = "0" ]; then
+printf '\n___________________________________________________________________\n'
+	if [ "$lang" = "zh" ]; then
+		printf '暂无可用的更新。\n'
+		printf '___________________________________________________________________\n'
+		printf '按任意键继续\n'
+		read -r "menu6"
+		case "$menu6" in
+		*)Welcome_message_zh
+		;;
+		esac
+	fi
+	if [ "$lang" = "en" ]; then
+		printf 'No updates is available.\n'
+		printf '___________________________________________________________________\n'
+		printf 'Enter any key to continue\n'
+		read -r "menu6"
+		case "$menu6" in
+		*)Welcome_message
+		;;
+		esac
+	fi
+fi
+}
+
+Check_jffs () {
+if [ "$(nvram get jffs2_scripts)" != "1" ]; then
+nvram set jffs2_scripts="1"
+nvram commit
+Needtoreboot="1"
 fi
 }
 
 Check_usbmode () {
 USB3="$(nvram show 2>/dev/null | grep 'usb_usb3' | wc -l)"
 if [ "$USB3" = "1" ]; then
-	if [ "$(nvram show 2>/dev/null | grep 'usb_usb3=1')" != "usb_usb3=1" ]; then
+	if [ "$(nvram get usb_usb3)" != "1" ]; then
 		nvram set usb_usb3="1"
 		nvram commit
-		USBON="1"
+		Needtoreboot="1"
 			if [ "$lang" = "zh" ]; then
 				printf '\n已经为你开启USB 3.0。\n'
 			fi
@@ -402,7 +489,7 @@ else
 		printf '\n你的路由器好像没有USB 3.0接口。\n'
 	fi
 	if [ "$lang" = "en" ]; then
-		printf '\nError, USB 3.0 port not found.\n'
+		printf '\nThe USB 3.0 port not found.\n'
 	fi
 fi
 }
@@ -426,26 +513,26 @@ fi
 
 Enable () {
 Check_usbmode
-if [ "$CheckEnable" = "0" ]; then
-	if [ -f "$SPATH/smb.postconf" ]; then
-		cp -f $SPATH/smb.postconf $SPATH/smb.postconf.old
-	fi
-	echo '#!/bin/sh' > $SPATH/smb.postconf
-	echo "#USB_Accelerator_v$VERSION" >> $SPATH/smb.postconf
-	echo 'CONFIG="$1"' >> $SPATH/smb.postconf
-	echo 'sed -i "\\~socket options~d" "$CONFIG"' >> $SPATH/smb.postconf
-	echo 'echo "strict locking = no" >> "$CONFIG"' >> $SPATH/smb.postconf
-	echo 'echo "#USB_Accelerator" >> "$CONFIG"' >> $SPATH/smb.postconf
-	if [ "$lang" = "zh" ]; then
-		echo "$SPATH/usbaccelerator.sh -DLZ" >> $SPATH/smb.postconf
-	else
-		echo "$SPATH/usbaccelerator.sh -DL" >> $SPATH/smb.postconf
-	fi
-	echo 'sleep 10' >> $SPATH/smb.postconf
-	echo "$SPATH/usbaccelerator.sh -Check"  >> $SPATH/smb.postconf
-	chmod 755 $SPATH/smb.postconf
-	service restart_nasapps >/dev/null 2>&1
+Check_jffs
+if [ -f "$SPATH/smb.postconf" ]; then
+	cp -f $SPATH/smb.postconf $SPATH/smb.postconf.old
 fi
+echo '#!/bin/sh' > $SPATH/smb.postconf
+echo "#USB_Accelerator_v$VERSION" >> $SPATH/smb.postconf
+echo 'CONFIG="$1"' >> $SPATH/smb.postconf
+echo 'sed -i "\\~socket options~d" "$CONFIG"' >> $SPATH/smb.postconf
+echo 'echo "socket options = IPTOS_LOWDELAY TCP_NODELAY SO_KEEPALIVE" >> "$CONFIG"' >> $SPATH/smb.postconf
+echo 'echo "strict locking = no" >> "$CONFIG"' >> $SPATH/smb.postconf
+echo "echo '#USB_Accelerator_v$VERSION' >> /etc/smb.conf" >> $SPATH/smb.postconf
+if [ "$lang" = "zh" ]; then
+	echo "$SPATH/usbaccelerator.sh -DLZ" >> $SPATH/smb.postconf
+else
+	echo "$SPATH/usbaccelerator.sh -DL" >> $SPATH/smb.postconf
+fi
+echo 'sleep 10' >> $SPATH/smb.postconf
+echo "$SPATH/usbaccelerator.sh -Check"  >> $SPATH/smb.postconf
+chmod 755 $SPATH/smb.postconf
+service restart_nasapps >/dev/null 2>&1
 
 if [ "$End_Message" = "1" ]; then
 End_Message
@@ -465,8 +552,26 @@ if [ "$User" = "1" ]; then
 	else
 		echo "$SPATH/usbaccelerator.sh -DL" >> $SPATH/sfsmb
 	fi
+	echo 'sleep 10' >> $SPATH/sfsmb
+	echo "$SPATH/usbaccelerator.sh -Check"  >> $SPATH/sfsmb
 	chmod 755 $SPATH/sfsmb
-	nvram set script_usbmount="/jffs/scripts/sfsmb"
+	if [ -f "/jffs/post-mount" ]; then
+		if [ "$(grep 'sfsmb' /jffs/post-mount 2>/dev/null | wc -l)" = "0" ]; then
+			echo "$SPATH/sfsmb" >> /jffs/post-mount
+			if [ -n "$(nvram get script_usbmount)" ] && [ "$(nvram get script_usbmount)" != "/jffs/post-mount" ]; then
+				echo "$(nvram get script_usbmount)" >> /jffs/post-mount
+			fi
+			chmod 755 /jffs/post-mount
+		fi
+	else
+		echo '#!/bin/sh' > /jffs/post-mount
+		echo "$SPATH/sfsmb" >> /jffs/post-mount
+		if [ -n "$(nvram get script_usbmount)" ] && [ "$(nvram get script_usbmount)" != "/jffs/post-mount" ]; then
+			echo "$(nvram get script_usbmount)" >> /jffs/post-mount
+		fi
+		chmod 755 /jffs/post-mount
+	fi
+	nvram set script_usbmount="/jffs/post-mount"
 	nvram commit
 fi
 
@@ -478,8 +583,9 @@ if [ "$(grep USB_Accelerator /etc/smb.conf 2>/dev/null | wc -l)" = "0" ]; then
 		done
 		sleep 1
 		sed -i "\\~socket options~d" /etc/smb.conf
+		echo "socket options = IPTOS_LOWDELAY TCP_NODELAY SO_KEEPALIVE" >> /etc/smb.conf
 		echo "strict locking = no" >> /etc/smb.conf
-		echo '#USB_Accelerator' >> /etc/smb.conf
+		echo "#USB_Accelerator_v$VERSION" >> /etc/smb.conf
 		nmbd -D -s /etc/smb.conf 2>/dev/null
 		/usr/sbin/smbd -D -s /etc/smb.conf 2>/dev/null
 	fi
@@ -499,15 +605,26 @@ fi
 }
 
 Enable_logs_zh () {
-logger -t "USB加速器" "USB加速器已经启动，代码$(grep 'strict locking' /etc/smb.conf 2>/dev/null | wc -l)$(grep 'socket options' /etc/smb.conf 2>/dev/null | wc -l)。"
-logger -t "USB加速器" "深入学习小米路由器的SMB优化后，小米模式即将迎来测试，欢迎愿意参与测试人员在帖子中报名！"
+if [ "$(grep 'IPTOS_LOWDELAY TCP_NODELAY SO_KEEPALIVE' /etc/smb.conf 2>/dev/null | wc -l)$(grep 'socket options' /etc/smb.conf 2>/dev/null | wc -l)" = "11" ]; then
+	Logout="成功"
+else
+	Logout="几乎成功"
+fi
+logger -t "USB加速器" "USB加速器v$(grep USB_Accelerator /etc/smb.conf | awk -F 'v' '{print $2}')$Logout启动。"
+logger -t "USB加速器" "如果你需要管理USB加速器，则在SSH中输入： $SPATH/usbaccelerator.sh"
 if [ "$(df -h | grep -c 'usbstatus.png')" = "0" ]; then
 mount --bind $SPATH/usbstatus.png /www/images/New_ui/usbstatus.png
 fi
 }
 
 Enable_logs () {
-logger -t "USB Accelerator" "USB Accelerator has started, code $(grep 'strict locking' /etc/smb.conf 2>/dev/null | wc -l)$(grep 'socket options' /etc/smb.conf 2>/dev/null | wc -l)."
+if [ "$(grep 'IPTOS_LOWDELAY TCP_NODELAY SO_KEEPALIVE' /etc/smb.conf 2>/dev/null | wc -l)$(grep 'socket options' /etc/smb.conf 2>/dev/null | wc -l)" = "11" ]; then
+	Logout="successfully"
+else
+	Logout="almost successfully"
+fi
+logger -t "USB Accelerator" "USB Accelerator v$(grep USB_Accelerator /etc/smb.conf | awk -F 'v' '{print $2}') has been $Logout started."
+logger -t "USB Accelerator" "If you want to set USB Accelerator, Please enter the code in the SSH client: $SPATH/usbaccelerator.sh"
 if [ "$(df -h | grep -c 'usbstatus.png')" = "0" ]; then
 mount --bind $SPATH/usbstatus.png /www/images/New_ui/usbstatus.png
 fi
@@ -517,16 +634,16 @@ End_Message () {
 printf '\n___________________________________________________________________\n'
 if [ "$lang" = "zh" ]; then
 	printf '已经开启USB加速器！\n'
-		if [ "$USBON" = "1" ]; then
+		if [ "$Needtoreboot" = "1" ]; then
 			printf '你可能需要重新启动才能达到最佳速度。\n'
 		fi
 	printf '如果你需要管理USB加速器，则在SSH中输入下方代码\n'
 else
 	printf 'USB Accelerator is enabled!\n'
-		if [ "$USBON" = "1" ]; then
+		if [ "$Needtoreboot" = "1" ]; then
 			printf 'For get the best speed, you may need to reboot the router.\n'
 		fi
-	printf 'If you want to set USB Accelerator, Please enter the code below\n'
+	printf 'If you want to set USB Accelerator, Please enter the code below in the SSH client\n'
 fi
 printf '%b%s/usbaccelerator.sh%b\n' "$COLOR_LIGHT_WHITE" "$SPATH" "$COLOR_WHITE"
 printf '___________________________________________________________________\n'
@@ -534,9 +651,12 @@ printf '___________________________________________________________________\n'
 
 Disable () {
 rm -f $SPATH/sfsmb 2>/dev/null
+sed -i "\\~sfsmb~d" /jffs/post-mount 2>/dev/null
 rm -f $SPATH/smb.postconf 2>/dev/null
-nvram set script_usbmount=""
-nvram commit
+if [ "$(cat /jffs/post-mount 2>/dev/null | wc -l)" -le "1" ]; then
+	nvram set script_usbmount=""
+	nvram commit
+fi
 service restart_nasapps >/dev/null 2>&1
 umount -f /www/images/New_ui/usbstatus.png 2>/dev/null
 printf '\n___________________________________________________________________\n'
@@ -550,14 +670,7 @@ printf '___________________________________________________________________\n'
 }
 
 Reinstall () {
-umount -f /www/images/New_ui/usbstatus.png 2>/dev/null
-rm -f $SPATH/sfsmb 2>/dev/null
-rm -f $SPATH/smb.postconf 2>/dev/null
-rm -f $SPATH/usbstatus.png 2>/dev/null
-rm -f $SPATH/usbaccelerator.sh 2>/dev/null
-nvram set script_usbmount=""
-nvram commit
-service restart_nasapps >/dev/null 2>&1
+Remove
 Download_files
 if [ "$lang" = "zh" ]; then
 	printf '\nUSB加速器已经重新安装。\n'
@@ -570,22 +683,27 @@ $SPATH/usbaccelerator.sh
 Remove () {
 umount -f /www/images/New_ui/usbstatus.png 2>/dev/null
 rm -f $SPATH/sfsmb 2>/dev/null
+sed -i "\\~sfsmb~d" /jffs/post-mount 2>/dev/null
 rm -f $SPATH/smb.postconf 2>/dev/null
 rm -f $SPATH/usbstatus.png 2>/dev/null
-nvram set script_usbmount=""
-nvram commit
+rm -f $SPATH/usbaccelerator.sh 2>/dev/null
+if [ "$(cat /jffs/post-mount 2>/dev/null | wc -l)" -le "1" ]; then
+	nvram set script_usbmount=""
+	nvram commit
+	rm -f /jffs/post-mount 2>/dev/null
+fi
 service restart_nasapps >/dev/null 2>&1
 if [ "$lang" = "zh" ]; then
 	printf '\nUSB加速器已经完全卸载，所有的一切都恢复到了安装前的状态。\n'
 else
 	printf '\nUSB Accelerator has been removed and everything changes before is restored to the default value.\n'
 fi
-rm -f $SPATH/usbaccelerator.sh 2>/dev/null
 }
 
 CheckEnable="0"
 if [ -f "$SPATH/smb.postconf" ]; then
-	if [ "$(grep 'USB_Accelerator_v' $SPATH/smb.postconf 2>/dev/null | wc -l)" = "0" ]; then
+	if [ "$(grep USB_Accelerator_v$VERSION $SPATH/smb.postconf 2>/dev/null | wc -l)" = "0" ]; then
+		Check_folder
 		Enable
 		CheckEnable="1"
 	else
@@ -594,7 +712,8 @@ if [ -f "$SPATH/smb.postconf" ]; then
 fi
 
 if [ -f "$SPATH/sfsmb" ]; then
-	if [ "$(grep 'USB_Accelerator_v' $SPATH/sfsmb 2>/dev/null | wc -l)" = "0" ]; then
+	if [ "$(grep USB_Accelerator_v$VERSION $SPATH/sfsmb 2>/dev/null | wc -l)" = "0" ]; then
+		Check_folder
 		User="1"
 		SFW_Enable
 		CheckEnable="1"
@@ -614,4 +733,5 @@ case "$1" in
 -DL)Enable_logs
 ;;
 *)Select_language
+;;
 esac
